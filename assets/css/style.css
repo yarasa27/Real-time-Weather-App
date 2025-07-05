@@ -325,6 +325,8 @@ body{
 }
 .search-view .view-item .item-link{
   position: absolute;
+  inset: 0;
+  box-shadow: none;
 }
 /*-----------------------------------*\
   #CURRENT WEATHER
