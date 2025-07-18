@@ -809,3 +809,7 @@ article.container::before{
   .highlight-card .m-icon{ font-size: 4.8rem; }
   .slider-list { gap: 16px; }
 }
+
+@media (min-width: 1400px) {
+  .highlight-list{ grid-template-columns: repeat(4, 1fr); }
+}

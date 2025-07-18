@@ -1,6 +1,15 @@
+'use strict';
+
+const api_key = "4456c13a9692cb887dd21abf20fe11a0";
+
 /**
- * @license MIT
- * @fileoverview Menage all routes
- * @copyright codewithsadee 2023 All rights reserved
- * @author codewithsadee <mohammadsadee24@gmail.com>
+ * 
+ * @param {string} URL 
+ * @param {Function} callback 
  */
+export const fetchData = function(URL, callback) {
+    fetch(`${URL}&appid=${api_key}`)
+    .then(res => res.json())
+    .then(data => callback(data));
+}
+
