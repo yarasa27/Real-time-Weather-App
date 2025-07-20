@@ -1,15 +1,43 @@
 'use strict';
 
-const api_key = "4456c13a9692cb887dd21abf20fe11a0";
+import { updateWeather, error404 } from "./app.js";
+const defaultLocation = "#/weather?lat=51.5073219&lon=-0.1276474"
+
+const currentLocation = function() {
+    window.navigator.geolocation.getCurrentPosition(res => {
+        const { latitude, longitude} = res.coords;
+
+        updateWeather(`lat=${latitude}`, `lon=${longitude}`);
+    }, err => {
+        window.location.hash = defaultLocation;
+    });
+}
 
 /**
  * 
- * @param {string} URL 
- * @param {Function} callback 
+ * @param {string} query 
  */
-export const fetchData = function(URL, callback) {
-    fetch(`${URL}&appid=${api_key}`)
-    .then(res => res.json())
-    .then(data => callback(data));
+const searchedLocation = query => updateWeather(...query.split("&"));
+
+const routes = new Map([
+    ["/current-location", currentLocation],
+    ["/weather", searchedLocation]
+]);
+
+const checkHash = function() {
+    const requestURL = window.location.hash.slice(1);
+
+    const [route, query] = requestURL.includes ? requestURL.split("?") : [requestURL];
+
+    routes.get(route) ? routes.get(route)(query) : error404();
 }
 
+window.addEventListener("hashchange", checkHash);
+
+window.addEventListener("laod", function() {
+    if (!window.location.hash) {
+        window.location.hash = "#/current-location"
+    } else{
+        checkHash();
+    }
+});
